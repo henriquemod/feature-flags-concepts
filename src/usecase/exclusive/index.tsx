@@ -1,20 +1,73 @@
-import Cloud from "@mui/icons-material/Cloud";
-import ContentCopy from "@mui/icons-material/ContentCopy";
-import ContentCut from "@mui/icons-material/ContentCut";
-import ContentPaste from "@mui/icons-material/ContentPaste";
-import { FormControlLabel, FormGroup, MenuList, Switch } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MenuItem from "@mui/material/MenuItem";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
+import {
+  Cloud,
+  ContentCopy,
+  ContentCut,
+  ContentPaste,
+} from "@mui/icons-material";
+import {
+  Divider,
+  FormControlLabel,
+  FormGroup,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Paper,
+  Switch,
+  Typography,
+} from "@mui/material";
+import { useCallback, useMemo } from "react";
 import { Header } from "../../header";
-import { Container, ContainerRow, ContentWrapper } from "../styles";
-import { useFlag } from "./useFlag";
+import {
+  ConsoleContainer,
+  Container,
+  ContainerRow,
+  ContentWrapper,
+  Label,
+  Status,
+} from "../styles";
+import { useFlag, Version } from "./useFlag";
 
 export const Exclusive = () => {
   const { available, toggle } = useFlag();
+
+  const version: Version = available ? "STABLE" : "NOT_AVAILABLE";
+
+  const labelColor = useMemo(() => {
+    if (version === "STABLE") {
+      return "success";
+    }
+
+    return "error";
+  }, [version]);
+
+  const renderObjectComponent = useCallback(
+    () => (
+      <ConsoleContainer>
+        <h4>
+          Available: <Status valid={!!available}>{String(available)}</Status>
+        </h4>
+        <h4>
+          Version: <Label color={labelColor}>{`${version}`}</Label>
+        </h4>
+      </ConsoleContainer>
+    ),
+    [available, labelColor, version]
+  );
+
+  const ExclusiveComponent = useCallback(() => {
+    return (
+      <>
+        <Divider />
+        <MenuItem>
+          <ListItemIcon>
+            <Cloud fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Web Clipboard</ListItemText>
+        </MenuItem>
+      </>
+    );
+  }, []);
 
   return (
     <Container>
@@ -24,12 +77,11 @@ export const Exclusive = () => {
         <h3>Refers to a feature that is only rendered if available</h3>
         <FormGroup>
           <FormControlLabel
-            control={
-              <Switch defaultChecked checked={available} onChange={toggle} />
-            }
+            control={<Switch checked={!!available} onChange={toggle} />}
             label="Available"
           />
         </FormGroup>
+        {renderObjectComponent()}
       </ContentWrapper>
       <ContainerRow>
         <Paper sx={{ width: 320, maxWidth: "100%" }}>
@@ -61,17 +113,7 @@ export const Exclusive = () => {
                 ⌘V
               </Typography>
             </MenuItem>
-            {available && (
-              <>
-                <Divider />
-                <MenuItem>
-                  <ListItemIcon>
-                    <Cloud fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Web Clipboard</ListItemText>
-                </MenuItem>
-              </>
-            )}
+            {available && <ExclusiveComponent />}
           </MenuList>
         </Paper>
       </ContainerRow>

@@ -1,6 +1,8 @@
 import React from "react";
 import { mockAvailableFeature, mockUnavailableFeature } from "./mock";
 
+export type Version = "STABLE" | "DEVELOPMENT" | "NOT_AVAILABLE";
+
 interface FlagReturn {
   available: boolean;
   version?: string;
@@ -11,23 +13,24 @@ export const useFlag = () => {
   const [data, setData] = React.useState<FlagReturn>();
 
   React.useEffect(() => {
-    mockAvailableFeature().then((res) => {
+    mockUnavailableFeature().then((res) => {
       setData((prev) => ({ ...prev, ...res }));
     });
   }, []);
 
   const toggle = React.useCallback(() => {
-    const getData = available ? mockAvailableFeature : mockUnavailableFeature;
+    const getData = !available ? mockAvailableFeature : mockUnavailableFeature;
 
     getData().then((res: FlagReturn) => {
+      const isAvailable = !!available;
       setData((prev) => ({ ...prev, ...res }));
-      setAvailable(!available);
+      setAvailable(!isAvailable);
     });
   }, [available]);
 
   return {
     available: data?.available,
     version: data?.version,
-    toggle
+    toggle,
   };
 };

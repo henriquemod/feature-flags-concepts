@@ -9,6 +9,34 @@ interface IAvailable {
   valid: boolean;
 }
 
+export interface ILabel {
+  color?: "success" | "error" | "warning";
+}
+
+export const ConsoleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  & h4 {
+    margin: 20px 10px;
+  }
+`;
+
+export const Label = styled.span<ILabel>`
+  color: ${(props) => {
+    switch (props.color) {
+      case "success":
+        return "green";
+      case "warning":
+        return "orange";
+      case "error":
+        return "red";
+      default:
+        return "unset";
+    }
+  }};
+`;
+
 export const Status = styled.span<IAvailable>`
   color: ${(props) => (props.valid ? "green" : "red")};
 `;
