@@ -31,6 +31,9 @@ export const Header = () => {
         <li>
           <Link to="/evolutive">Evolutive</Link>
         </li>
+        <li>
+          <Link to="/exclusive-evolutive">ExclusiveEvolutive</Link>
+        </li>
       </List>
     </div>
   );
