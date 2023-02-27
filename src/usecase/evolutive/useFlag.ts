@@ -1,9 +1,11 @@
 import React from "react";
 import { mockFeatureWithNewVersion, mockFeatureWithOldVersion } from "./mock";
 
+export type Version = "STABLE" | "DEVELOPMENT" | "NOT_AVAILABLE";
+
 interface FlagReturn {
   available: boolean;
-  version?: string;
+  version: Version;
 }
 
 export const useFlag = () => {
@@ -17,7 +19,9 @@ export const useFlag = () => {
   }, []);
 
   const toggle = React.useCallback(() => {
-    const getData = available ? mockFeatureWithOldVersion : mockFeatureWithNewVersion;
+    const getData = available
+      ? mockFeatureWithOldVersion
+      : mockFeatureWithNewVersion;
 
     getData().then((res: FlagReturn) => {
       setData((prev) => ({ ...prev, ...res }));
@@ -28,6 +32,6 @@ export const useFlag = () => {
   return {
     available: data?.available,
     version: data?.version,
-    toggle
+    toggle,
   };
 };

@@ -32,7 +32,7 @@ export const Header = () => {
           <Link to="/evolutive">Evolutive</Link>
         </li>
         <li>
-          <Link to="/exclusive-evolutive">ExclusiveEvolutive</Link>
+          <Link to="/exclusive-evolutive">Exclusive/Evolutive</Link>
         </li>
       </List>
     </div>

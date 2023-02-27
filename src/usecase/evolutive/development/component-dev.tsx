@@ -14,7 +14,7 @@ import {
   Cloud,
 } from "@mui/icons-material";
 
-export const ComponentV2 = () => {
+export const ComponentDev = () => {
   return (
     <Paper sx={{ width: 320, maxWidth: "100%" }}>
       <MenuList>

@@ -1,29 +1,77 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
+import { Button, ButtonGroup } from "@mui/material";
 import { Header } from "../../header";
-import { Container, ContentWrapper, Status, ContainerRow } from "../styles";
+import {
+  Label,
+  Status,
+  Container,
+  ContainerRow,
+  ContentWrapper,
+  ConsoleContainer,
+} from "../styles";
 import { useFlag } from "./useFlag";
-import { ComponentV1 } from "./v1/component-v1";
-import { ComponentV2 } from "./v2/component-v2";
-import { ButtonGroup, Button } from "@mui/material";
+import { ComponentDev } from "./development/component-dev";
+import { ComponentStable } from "./stable/component-stable";
 
-const FALLBACK_VERSION = "v1";
+const FALLBACK_VERSION = "STABLE";
 
-const makeButtonStyle = (disabled: boolean): React.CSSProperties =>
-  disabled
-    ? {
-        backgroundColor: "gray",
-        width: "100px",
-      }
-    : { width: "100px" };
+const makeButtonStyle = (disabled: boolean): React.CSSProperties => ({
+  width: "150px",
+  backgroundColor: disabled ? "gray" : undefined,
+});
 
-export const Evolutive = () => {
+const Evolutive = () => {
   const { available, version, toggle } = useFlag();
 
-  const Component = React.useCallback(() => {
+  const Component = useCallback(() => {
     const allowedVersion = version ?? FALLBACK_VERSION;
-    const Component = allowedVersion === "v2" ? ComponentV2 : ComponentV1;
-    return available ? <Component /> : <ComponentV1 />;
+    const Component =
+      allowedVersion === "DEVELOPMENT" ? ComponentDev : ComponentStable;
+    return available ? <Component /> : <ComponentStable />;
   }, [available, version]);
+
+  const labelColor = useMemo(() => {
+    if (version === "STABLE") {
+      return "success";
+    }
+
+    if (version === "DEVELOPMENT") {
+      return "warning";
+    }
+
+    return "error";
+  }, [version]);
+
+  const renderObjectComponent = useCallback(
+    () => (
+      <ConsoleContainer>
+        <h4>
+          Available: <Status valid={!!available}>{String(available)}</Status>
+        </h4>
+        <h4>
+          Version: <Label color={labelColor}>{`${version}`}</Label>
+        </h4>
+      </ConsoleContainer>
+    ),
+    [available, labelColor, version]
+  );
+
+  const renderActionsComponent = useCallback(
+    () => (
+      <ButtonGroup variant="contained">
+        <Button
+          onClick={toggle}
+          style={makeButtonStyle(version === "DEVELOPMENT")}
+        >
+          Stable
+        </Button>
+        <Button onClick={toggle} style={makeButtonStyle(version === "STABLE")}>
+          Development
+        </Button>
+      </ButtonGroup>
+    ),
+    [toggle, version]
+  );
 
   return (
     <Container>
@@ -33,19 +81,8 @@ export const Evolutive = () => {
         <h3>
           Refers to a feature that already implemented and needs to be updated
         </h3>
-        <ButtonGroup variant="contained">
-          <Button onClick={toggle} style={makeButtonStyle(version === "v2")}>
-            v1
-          </Button>
-          <Button onClick={toggle} style={makeButtonStyle(version === "v1")}>
-            v2
-          </Button>
-        </ButtonGroup>
-        <h4>
-          Version: {"{ available: "}
-          <Status valid={Boolean(available)}>{String(available)}</Status>
-          {`, version: ${version} }`}
-        </h4>
+        {renderActionsComponent()}
+        {renderObjectComponent()}
       </ContentWrapper>
       <ContainerRow>
         <Component />
@@ -53,3 +90,5 @@ export const Evolutive = () => {
     </Container>
   );
 };
+
+export default Evolutive;
