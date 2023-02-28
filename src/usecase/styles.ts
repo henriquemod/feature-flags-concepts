@@ -13,6 +13,17 @@ export interface ILabel {
   color?: "success" | "error" | "warning";
 }
 
+export const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & div {
+    margin-top: 20px;
+  }
+`;
+
 export const ConsoleContainer = styled.div`
   display: flex;
   justify-content: space-between;
