@@ -20,7 +20,7 @@ const List = styled.ul`
 export const Header = () => {
   return (
     <div>
-      <h1>NG - Flag System - Examples</h1>
+      <h1>Flag System - Examples</h1>
       <List>
         <li>
           <Link to="/">Home</Link>
