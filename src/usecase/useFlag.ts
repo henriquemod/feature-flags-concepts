@@ -2,8 +2,8 @@ import React from "react";
 
 export type Version = "STABLE" | "DEVELOPMENT" | "NOT_AVAILABLE";
 
-export const useFlag = () => {
-  const [available, setAvailable] = React.useState(false);
+export const useFlag = (enabled = false) => {
+  const [available, setAvailable] = React.useState(enabled);
   const [version, setVersion] = React.useState<Version>("NOT_AVAILABLE");
 
   React.useEffect(() => {

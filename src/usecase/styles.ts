@@ -64,6 +64,7 @@ export const ContainerRow = styled.div`
   flex-direction: row;
   justify-content: center;
   align-content: center;
+  margin-bottom: 50px;
 `;
 
 export const Wrapper = styled.div`
@@ -113,5 +114,5 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 `;

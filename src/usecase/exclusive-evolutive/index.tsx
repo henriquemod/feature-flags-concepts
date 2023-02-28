@@ -15,7 +15,7 @@ import {
     Switch,
     Button,
 } from "@mui/material";
-import { Version, useFlag } from "./useFlag";
+import { Version, useFlag } from "../useFlag";
 import { useCallback, useMemo } from "react";
 import { Component } from "./component";
 
@@ -24,12 +24,13 @@ const makeButtonStyle = (disabled: boolean): React.CSSProperties => ({
     backgroundColor: disabled ? "gray" : undefined,
 });
 
+const validate = (version: Version) => (versionToCompare: Version) => {
+    return version === "NOT_AVAILABLE" || version === versionToCompare;
+};
+
 export const ExclusiveEvolutive = () => {
     const { available, version, toggleEnabled, handleChangeVersion } = useFlag();
-
-    const validate = (versionToCompare: Version) => {
-        return version === "NOT_AVAILABLE" || version === versionToCompare;
-    };
+    const compareVersion = validate(version);
 
     const labelColor = useMemo(() => {
         if (version === "STABLE") {
@@ -62,13 +63,13 @@ export const ExclusiveEvolutive = () => {
             <ButtonGroup disabled={!available} variant="contained">
                 <Button
                     onClick={() => handleChangeVersion("STABLE")}
-                    style={makeButtonStyle(validate("DEVELOPMENT"))}
+                    style={makeButtonStyle(compareVersion("DEVELOPMENT"))}
                 >
                     Stable
                 </Button>
                 <Button
                     onClick={() => handleChangeVersion("DEVELOPMENT")}
-                    style={makeButtonStyle(validate("STABLE"))}
+                    style={makeButtonStyle(compareVersion("STABLE"))}
                 >
                     Development
                 </Button>
