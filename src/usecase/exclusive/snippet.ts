@@ -1,53 +1,4 @@
-import {
-  Cloud,
-  ContentCopy,
-  ContentCut,
-  ContentPaste,
-} from "@mui/icons-material";
-import {
-  Divider,
-  FormControlLabel,
-  FormGroup,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Paper,
-  Switch,
-  Typography,
-} from "@mui/material";
-import { useCallback, useMemo } from "react";
-import { Header } from "../../header";
-import {
-  ConsoleContainer,
-  Container,
-  ContainerRow,
-  ContentWrapper,
-  Label,
-  Status,
-} from "../styles";
-import { useFlag, Version } from "../useFlag";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import codeSnippet from "./snippet";
-import styled from "styled-components";
-import { nord } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-const StyledPaper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const Snippet = () => {
-  return (
-    <StyledPaper>
-      <SyntaxHighlighter showLineNumbers language="tsx" style={nord}>
-        {codeSnippet}
-      </SyntaxHighlighter>
-    </StyledPaper>
-  );
-};
-
-export const Exclusive = () => {
+export default `export const Exclusive = () => {
   const { available, toggleEnabled } = useFlag();
 
   const version: Version = available ? "STABLE" : "NOT_AVAILABLE";
@@ -67,7 +18,7 @@ export const Exclusive = () => {
           Available: <Status valid={!!available}>{String(available)}</Status>
         </h4>
         <h4>
-          Version: <Label color={labelColor}>{`${version}`}</Label>
+          Version: <Label color={labelColor}>{` + "${version}" +`}</Label>
         </h4>
       </ConsoleContainer>
     ),
@@ -136,10 +87,6 @@ export const Exclusive = () => {
           </MenuList>
         </Paper>
       </ContainerRow>
-        <h1>Code Example</h1>
-      <ContainerRow>
-        <Snippet />
-      </ContainerRow>
     </Container>
   );
-};
+};`

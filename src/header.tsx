@@ -5,6 +5,7 @@ const List = styled.ul`
   list-style: none;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   & li {
     margin: 0 20px;
@@ -17,6 +18,12 @@ const List = styled.ul`
   }
 `;
 
+const Divider = styled.div`
+  width:  1px;
+  height: 10px;
+  background-color: gray;
+`;
+
 export const Header = () => {
   return (
     <div>
@@ -25,6 +32,7 @@ export const Header = () => {
         <li>
           <Link to="/">Home</Link>
         </li>
+        <Divider />
         <li>
           <Link to="/exclusive">Exclusive</Link>
         </li>
@@ -33,6 +41,10 @@ export const Header = () => {
         </li>
         <li>
           <Link to="/exclusive-evolutive">Exclusive/Evolutive</Link>
+        </li>
+        <Divider />
+        <li>
+          <Link to="/exclusive-evolutive">Context</Link>
         </li>
       </List>
     </div>

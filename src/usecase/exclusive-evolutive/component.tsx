@@ -1,6 +1,6 @@
 import { ComponentStable } from "./stable/component-stable";
 import { ComponentDev } from "./development/component-dev";
-import { Version } from "./useFlag";
+import { Version } from "../useFlag";
 
 interface IProps {
     version: Version;

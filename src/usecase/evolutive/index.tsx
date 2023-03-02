@@ -9,7 +9,7 @@ import {
   ContentWrapper,
   ConsoleContainer,
 } from "../styles";
-import { useFlag } from "./useFlag";
+import { Version, useFlag } from "../useFlag";
 import { ComponentDev } from "./development/component-dev";
 import { ComponentStable } from "./stable/component-stable";
 
@@ -21,7 +21,11 @@ const makeButtonStyle = (disabled: boolean): React.CSSProperties => ({
 });
 
 const Evolutive = () => {
-  const { available, version, toggle } = useFlag();
+  const { available, version, toggleEnabled, handleChangeVersion } = useFlag(true);
+
+  const validate = (versionToCompare: Version) => {
+    return version === "NOT_AVAILABLE" || version === versionToCompare;
+  };
 
   const Component = useCallback(() => {
     const allowedVersion = version ?? FALLBACK_VERSION;
@@ -60,17 +64,20 @@ const Evolutive = () => {
     () => (
       <ButtonGroup variant="contained">
         <Button
-          onClick={toggle}
-          style={makeButtonStyle(version === "DEVELOPMENT")}
+          onClick={() => handleChangeVersion("STABLE")}
+          style={makeButtonStyle(validate("DEVELOPMENT"))}
         >
           Stable
         </Button>
-        <Button onClick={toggle} style={makeButtonStyle(version === "STABLE")}>
+        <Button
+          onClick={() => handleChangeVersion("DEVELOPMENT")}
+          style={makeButtonStyle(validate("STABLE"))}
+        >
           Development
         </Button>
       </ButtonGroup>
     ),
-    [toggle, version]
+    [toggleEnabled, version]
   );
 
   return (
